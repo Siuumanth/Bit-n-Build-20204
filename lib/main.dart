@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../screens/home.dart';
 
 void main() {
-  runApp(StyleSort());
+  runApp(const StyleSort());
 }
 
 class StyleSort extends StatefulWidget {
@@ -15,7 +15,7 @@ class StyleSort extends StatefulWidget {
 class _StyeSortState extends State<StyleSort> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: Home(),
       debugShowCheckedModeBanner: false,
     );
