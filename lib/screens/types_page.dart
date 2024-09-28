@@ -8,6 +8,9 @@ import '../constants/colors.dart';
 import '../widgets/type_card.dart';
 import '../model/model.dart';
 
+import '../model/database.dart';
+import '../widgets/typedialog.dart';
+
 class TypeSection extends StatefulWidget {
   final String sectionName;
   const TypeSection({required this.sectionName, super.key});
@@ -17,7 +20,22 @@ class TypeSection extends StatefulWidget {
 }
 
 class _TypeSectionState extends State<TypeSection> {
-  List<Type> typesList = Type.typeslist();
+  List<Type> typesList = [];
+  late TextEditingController typecontroller;
+
+  @override
+  void initState() {
+    super.initState();
+    loadTypesFromDatabase().then((_) {});
+    typecontroller = TextEditingController();
+  }
+
+  Future<void> loadTypesFromDatabase() async {
+    final allTypes = await DatabaseHelper().getTypes(widget.sectionName);
+    setState(() {
+      typesList = allTypes; // Assigning sections from the database
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +48,7 @@ class _TypeSectionState extends State<TypeSection> {
               child: Column(
                 children: [
                   searchbox(),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   Expanded(
                     child: ListView.builder(
                       itemCount:
@@ -84,8 +102,53 @@ class _TypeSectionState extends State<TypeSection> {
                     ),
                   )
                 ],
-              ))
+              )),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 20, right: 20),
+              child: ElevatedButton(
+                onPressed: () {
+                  _showtypeDialog(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: tdyellow,
+                  foregroundColor: Colors.white,
+                  elevation: 10,
+                ),
+                child: const Text(
+                  '+',
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+          )
         ]));
+  }
+
+  void _showtypeDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return TypeDialog();
+      },
+    ).then((result) {
+      //the 'result' contains the returned values
+      if (result != null) {
+        String name = result['name'];
+        String imagePath = result['imagePath'];
+        setState(() async {
+          DatabaseHelper().insertSection(name, imagePath);
+          await loadTypesFromDatabase();
+        });
+
+        print('Name: $name');
+        print('Image Path: $imagePath');
+      }
+    });
   }
 
   AppBar buildAppBar() {
@@ -124,7 +187,7 @@ class _TypeSectionState extends State<TypeSection> {
               border: InputBorder.none,
               prefixIconConstraints:
                   const BoxConstraints(minWidth: 25, maxHeight: 20),
-              hintText: 'Search ' + widget.sectionName,
+              hintText: 'Search ${widget.sectionName}',
               hintStyle: TextStyle(color: tdblack))),
     );
   }

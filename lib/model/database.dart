@@ -28,8 +28,9 @@ class DatabaseHelper {
     await db.execute('''
     CREATE TABLE clothType (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      type_name TEXT NOT NULL
-      type_image_path TEXT
+      type_name TEXT NOT NULL,
+      type_image_path TEXT,
+      section_name TEXT
     )
   ''');
 
@@ -58,6 +59,7 @@ class DatabaseHelper {
   ''');
 
     await _insertDefaultSections(db);
+    await _insertDefaultTypes(db);
   }
 
   Future<void> _insertDefaultSections(Database db) async {
@@ -85,12 +87,56 @@ class DatabaseHelper {
 
   Future<void> insertSection(String sectionName, String imagePath) async {
     final db = await DatabaseHelper().database;
-
     await db.insert(
       'clothSection',
       {
         'section_name': sectionName,
         'image_path': imagePath,
+      },
+    );
+  }
+
+  //
+  //
+  //
+  //
+
+  Future<List<Type>> getTypes(String sectionName) async {
+    final db = await database; // Access the database
+    final List<Map<String, dynamic>> maps = await db.query('clothType',
+        where: 'section_name = ?', whereArgs: [sectionName]);
+
+    return List.generate(maps.length, (i) {
+      return Type(
+          id: maps[i]['id'].toString(),
+          type_name: maps[i]['type_name'],
+          type_image_path: maps[i]['type_image_path'],
+          section_name: maps[i]['section_name']);
+    });
+  }
+
+  Future<void> _insertDefaultTypes(Database db) async {
+    final List<Type> defaultypes = Type.typeslist();
+
+    for (var type in defaultypes) {
+      await db.insert('clothType', {
+        'type_name': type.type_name,
+        'type_image_path': type.type_image_path,
+        'section_name': type.section_name
+      });
+      print('values insettedd');
+    }
+  }
+
+  Future<void> insertype(
+      String type_name, String sectionName, String imagePath) async {
+    final db = await DatabaseHelper().database;
+    await db.insert(
+      'clothType',
+      {
+        'type_name': type_name,
+        'section_name': sectionName,
+        'type_image_path': imagePath,
       },
     );
   }

@@ -30,7 +30,6 @@ class _HomeState extends State<Home> {
     loadSectionsFromDatabase().then((_) {
       print("Sections loaded: ${sectionList.length}");
     });
-    ;
   }
 
   List<Section> sectionList = [];
@@ -88,17 +87,17 @@ class _HomeState extends State<Home> {
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text('Wardrobe'),
-            onTap: () => _navigateTo('Wardrobe'), // Navigate to Wardrobe
+            onTap: () => _navigateTo('Wardrobe'),
           ),
           ListTile(
             leading: const Icon(Icons.calendar_today),
             title: const Text('Calendar'),
-            onTap: () => _navigateTo('Calendar'), // Navigate to Calendar
+            onTap: () => _navigateTo('Calendar'),
           ),
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Settings'),
-            onTap: () => _navigateTo('Settings'), // Navigate to Settings
+            onTap: () => _navigateTo('Settings'),
           ),
         ],
       ),
@@ -115,7 +114,7 @@ class _HomeState extends State<Home> {
       case 'Settings':
         return SettingsSection();
       default:
-        return WardrobeSection(); // Default to Wardrobe
+        return WardrobeSection();
     }
   }
 
@@ -225,7 +224,6 @@ class _HomeState extends State<Home> {
         print('Name: $name');
         print('Image Path: $imagePath');
       }
-      ;
     });
   }
 

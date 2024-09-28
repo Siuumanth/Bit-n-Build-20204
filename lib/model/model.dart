@@ -44,23 +44,31 @@ class Type {
   final String id;
   String type_name;
   String type_image_path;
+  String section_name;
 
-  Type({
-    required this.id,
-    required this.type_name,
-    required this.type_image_path,
-  });
+  Type(
+      {required this.id,
+      required this.type_name,
+      required this.type_image_path,
+      required this.section_name});
 
   static List<Type> typeslist() {
     return [
       Type(
           id: '1',
           type_name: 'Shirts',
-          type_image_path: 'assets/images/shirt2_type.png'),
+          type_image_path: 'assets/images/shirt2_type.png',
+          section_name: 'Office'),
       Type(
           id: '2',
           type_name: 'Pants',
-          type_image_path: 'assets/images/pant_type.png'),
+          type_image_path: 'assets/images/pant_type.png',
+          section_name: 'Office'),
+      Type(
+          id: '3',
+          type_name: 'Pants',
+          type_image_path: 'assetsimagescasual_pants.png',
+          section_name: 'Casual'),
     ];
   }
 }

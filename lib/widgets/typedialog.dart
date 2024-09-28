@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:style_sorter/constants/colors.dart';
 import 'dart:io';
 
-class SecDialog extends StatefulWidget {
-  const SecDialog({super.key});
+class TypeDialog extends StatefulWidget {
+  const TypeDialog({super.key});
 
   @override
-  _SecDialogState createState() => _SecDialogState();
+  _TypeDialogState createState() => _TypeDialogState();
 }
 
-class _SecDialogState extends State<SecDialog> {
+class _TypeDialogState extends State<TypeDialog> {
   late TextEditingController name_controller;
   late String? image_path;
   bool imageornot = false;
@@ -27,7 +27,7 @@ class _SecDialogState extends State<SecDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add Section'),
+      title: const Text('Add Type'),
       content: SizedBox(
         width: double.maxFinite,
         child: Column(
@@ -46,7 +46,7 @@ class _SecDialogState extends State<SecDialog> {
                   child: TextField(
                     controller: name_controller,
                     decoration: InputDecoration(
-                        hintText: 'Section Name',
+                        hintText: 'Type Name',
                         hintStyle: TextStyle(
                             fontWeight: FontWeight.w400, color: tdblack)),
                   ),
@@ -85,7 +85,7 @@ class _SecDialogState extends State<SecDialog> {
             if (name_controller.text.isEmpty) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Please enter a section name!'),
+                  content: Text('Please enter a type name!'),
                   duration: Duration(seconds: 2),
                   behavior: SnackBarBehavior.floating,
                   margin: EdgeInsets.all(10),
