@@ -1,5 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import '../model/database.dart';
 
 import 'package:flutter/material.dart';
 import 'package:style_sorter/constants/colors.dart';
@@ -13,7 +14,7 @@ class SecDialog extends StatefulWidget {
 class _SecDialogState extends State<SecDialog> {
   late TextEditingController name_controller;
   late String? image_path;
-  bool returnedornot = false;
+  bool imageornot = false;
 
   @override
   void initState() {
@@ -24,7 +25,7 @@ class _SecDialogState extends State<SecDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Add Section'),
+      title: const Text('Add Section'),
       content: Container(
         width: double.maxFinite,
         child: Column(
@@ -41,6 +42,7 @@ class _SecDialogState extends State<SecDialog> {
                 ),
                 Expanded(
                   child: TextField(
+                    controller: name_controller,
                     decoration: InputDecoration(
                         hintText: 'Section Name',
                         hintStyle: TextStyle(
@@ -49,7 +51,7 @@ class _SecDialogState extends State<SecDialog> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             GestureDetector(
               onTap: () async {
                 setState(() async {
@@ -64,9 +66,9 @@ class _SecDialogState extends State<SecDialog> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 alignment: Alignment.center,
-                child: returnedornot
+                child: imageornot
                     ? Image.file(File(image_path!))
-                    : Text(
+                    : const Text(
                         'Tap to select an image',
                         style: TextStyle(color: Colors.grey),
                       ),
@@ -79,7 +81,6 @@ class _SecDialogState extends State<SecDialog> {
         TextButton(
           onPressed: () {
             if (name_controller.text.isEmpty) {
-              // Show a Snackbar if the name is empty
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Please enter a section name!'),
@@ -90,11 +91,17 @@ class _SecDialogState extends State<SecDialog> {
               );
 
               print(name_controller.text);
+            } else if ((image_path == '')) {
+              Navigator.pop(context, {
+                'name': name_controller.text,
+                'imagePath': image_path, // Empty if no image
+                'imageornot': false
+              });
             } else {
               Navigator.pop(context, {
                 'name': name_controller.text,
-                'imagePath': image_path ?? '', // Empty if no image
-                'returnedornot': returnedornot
+                'imagePath': image_path, // Empty if no image
+                'imageornot': true
               });
             }
           },
@@ -120,12 +127,12 @@ class _SecDialogState extends State<SecDialog> {
 
     if (pickedFile != null) {
       setState(() {
-        returnedornot = true;
+        imageornot = true;
       });
       return pickedFile.path;
     } else {
       setState(() {
-        returnedornot = false;
+        imageornot = false;
       });
       return null;
     }

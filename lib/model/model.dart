@@ -1,7 +1,7 @@
 class Item {
   final String id;
   String? type;
-  String? wardrobe;
+
   String? title;
   String? desc;
   String? photoPath; // File path as String
@@ -9,7 +9,6 @@ class Item {
   Item({
     required this.id,
     required this.type,
-    required this.wardrobe,
     required this.title,
     required this.desc,
     required this.photoPath,
@@ -34,23 +33,34 @@ class Section {
   static List<Section> sectionlist() {
     return [
       Section(
-          id: 'w1_sec1',
-          name: 'Office',
-          photo: 'assets/images/office_section.jpeg'),
+          id: '1', name: 'Office', photo: 'assets/images/office_section.jpeg'),
       Section(
-          id: 'w1_sec2',
-          name: 'Casual',
-          photo: 'assets/images/casual_section.jpeg'),
+          id: '2', name: 'Casual', photo: 'assets/images/casual_section.jpeg'),
     ];
   }
 }
 
-class Wardrobe {
+class Type {
   final String id;
-  String wardrobeName;
+  String type_name;
+  String type_image_path;
 
-  Wardrobe({
+  Type({
     required this.id,
-    required this.wardrobeName,
+    required this.type_name,
+    required this.type_image_path,
   });
+
+  static List<Type> typeslist() {
+    return [
+      Type(
+          id: '1',
+          type_name: 'Shirts',
+          type_image_path: 'assets/images/shirt2_type.png'),
+      Type(
+          id: '2',
+          type_name: 'Pants',
+          type_image_path: 'assets/images/pant_type.png'),
+    ];
+  }
 }

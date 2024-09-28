@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:style_sorter/widgets/section.dart';
-
+import '../model/database.dart';
 import '../constants/colors.dart';
 import '../model/model.dart';
 import '../widgets/sec_dialog.dart';
+import '../model/dbmethods.dart';
+import 'types_page.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -11,8 +13,6 @@ class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
 }
-
-final SectionList = Section.sectionlist();
 
 class _HomeState extends State<Home> {
   String _selectedSection = 'Wardrobe';
@@ -22,6 +22,24 @@ class _HomeState extends State<Home> {
       _selectedSection = section;
     });
     Navigator.of(context).pop();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadSectionsFromDatabase().then((_) {
+      print("Sections loaded: ${sectionList.length}");
+    });
+    ;
+  }
+
+  List<Section> sectionList = [];
+
+  Future<void> loadSectionsFromDatabase() async {
+    final sections = await DatabaseHelper().getSections();
+    setState(() {
+      sectionList = sections; // Assigning sections from the database
+    });
   }
 
   @override
@@ -112,16 +130,28 @@ class _HomeState extends State<Home> {
                 const SizedBox(height: 20),
                 searchbox(),
                 const SizedBox(height: 10),
-                dropdownMenu(),
                 const SizedBox(height: 20),
                 Expanded(
                     child: ListView(
                   children: [
-                    for (Section item in SectionList)
-                      Sectionitem(
-                        section: item,
-                        on_section_edited: change_section,
-                        on_section_deleted: delete_section,
+                    for (Section item in sectionList)
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  TypeSection(sectionName: item.name),
+                            ),
+                          );
+                        },
+                        child: Sectionitem(
+                          section: item,
+                          on_section_edited: change_section,
+                          on_section_deleted: delete_section,
+                          imageornot:
+                              (item.id == '1' || item.id == '2') ? false : true,
+                        ),
                       ),
                     dividierline(),
                   ],
@@ -176,46 +206,6 @@ class _HomeState extends State<Home> {
   void change_section() {}
   void delete_section() {}
 
-  Widget dropdownMenu() {
-    final List<String> items = ['Wardrobe 1', 'Wardrobe 2', 'Wardrobe 3'];
-
-    String selectedItem = 'Wardrobe 1';
-
-    return StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) {
-        return Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            padding: const EdgeInsets.only(left: 15),
-            child: DropdownButton<String>(
-              value: selectedItem,
-              icon: const Icon(Icons.arrow_downward),
-              iconSize: 24,
-              elevation: 16,
-              style: TextStyle(
-                color: tdblack,
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
-              underline: const SizedBox(), // Remove underline
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedItem = newValue!; // Update the selected value
-                });
-              },
-              items: items.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   void _showSecDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -227,6 +217,10 @@ class _HomeState extends State<Home> {
       if (result != null) {
         String name = result['name'];
         String imagePath = result['imagePath'];
+        setState(() async {
+          DatabaseHelper().insertSection(name, imagePath);
+          await loadSectionsFromDatabase();
+        });
 
         print('Name: $name');
         print('Image Path: $imagePath');

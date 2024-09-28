@@ -29,6 +29,7 @@ class DatabaseHelper {
     CREATE TABLE clothType (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       type_name TEXT NOT NULL
+      type_image_path TEXT
     )
   ''');
 
@@ -36,15 +37,8 @@ class DatabaseHelper {
     await db.execute('''
     CREATE TABLE clothSection (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      section_name TEXT NOT NULL
-    )
-  ''');
-
-    // Create Wardrobe table
-    await db.execute('''
-    CREATE TABLE wardrobe (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      wardrobe_name TEXT NOT NULL
+      section_name TEXT NOT NULL,
+      image_path TEXT
     )
   ''');
 
@@ -66,14 +60,39 @@ class DatabaseHelper {
     await _insertDefaultSections(db);
   }
 
-  // Method to insert default sections
   Future<void> _insertDefaultSections(Database db) async {
     final List<Section> defaultSections = Section.sectionlist();
 
     for (var section in defaultSections) {
-      await db.insert('clothSection', {
-        'section_name': section.name,
-      });
+      await db.insert('clothSection',
+          {'section_name': section.name, 'image_path': section.photo});
     }
   }
+
+  Future<List<Section>> getSections() async {
+    final db = await database; // Access the database
+    final List<Map<String, dynamic>> maps = await db.query('clothSection');
+
+    return List.generate(maps.length, (i) {
+      return Section(
+        id: maps[i]['id'].toString(),
+        name: maps[i]['section_name'],
+        photo: maps[i]
+            ['image_path'], // Ensure you're fetching the image path too
+      );
+    });
+  }
+
+  Future<void> insertSection(String sectionName, String imagePath) async {
+    final db = await DatabaseHelper().database;
+
+    await db.insert(
+      'clothSection',
+      {
+        'section_name': sectionName,
+        'image_path': imagePath,
+      },
+    );
+  }
+  //
 }
