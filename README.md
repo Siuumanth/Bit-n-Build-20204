@@ -25,7 +25,7 @@ Photo Integration:
 Users can take photos of their clothes or upload photos from gallery, and post them to the appropriate frames, enabling a visual catalog of their wardrobe for easier organization.
 
 
-Link for all the Screenshots and demo videos -  [](https://drive.google.com/drive/folders/119zttMtrbcW2E3LfzIPa-ImsME9GaKY6?usp=drive_link)
+Link for all the Screenshots and demo videos -  [Here is the Link](https://drive.google.com/drive/folders/119zttMtrbcW2E3LfzIPa-ImsME9GaKY6?usp=drive_link)
 
 ![Alt text](https://github.com/Siuumanth/Bit-n-Build-20204/blob/main/ReadmePics/sections.jpeg)
 
