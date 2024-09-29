@@ -2,11 +2,26 @@
 
 An app to organise your wardrobe
 
-## Getting Started
+Requirements :
+- Flutter 3.24.3 • channel stable
+- Dart 3.5.3
 
-About the App:
+Dependencies :
+- flutter:
+    sdk: flutter
+- sqflite: ^2.3.3+2
+- image_picker: ^1.1.2
+- table_calendar: ^3.1.2
+-  flutter_launcher_icons: ^0.14.1
+   
+
+
+## About the App:
 
 We have developed an innovative wardrobe management app that allows users to efficiently track and organize their clothing. The app provides a clear overview of the clothes in their wardrobe, ensuring users don’t make redundant purchases by buying items they already own.
+
+Local Storage : 
+ The app uses sqflite and path_provider to store data locally in the SQLite database, so no internet connection is required.
 
 Key Features:
 - Strong SQL database for storing the users item details
