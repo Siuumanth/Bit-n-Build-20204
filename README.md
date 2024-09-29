@@ -21,6 +21,9 @@ Each section can have subsections for specific clothing types, including Shorts,
 
 
 Photo Integration:
+
 Users can take photos of their clothes or upload photos from gallery, and post them to the appropriate frames, enabling a visual catalog of their wardrobe for easier organization.
+
+
 
 
