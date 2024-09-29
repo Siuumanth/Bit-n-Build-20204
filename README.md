@@ -24,6 +24,7 @@ Photo Integration:
 
 Users can take photos of their clothes or upload photos from gallery, and post them to the appropriate frames, enabling a visual catalog of their wardrobe for easier organization.
 
+![Alt text]([https://raw.githubusercontent.com/username/repository/branch/path/to/image.png](https://github.com/Siuumanth/Bit-n-Build-20204/blob/main/ReadmePics/sections.jpeg))
 
 
 
