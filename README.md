@@ -26,6 +26,8 @@ Users can take photos of their clothes or upload photos from gallery, and post t
 
 ![Alt text](https://github.com/Siuumanth/Bit-n-Build-20204/blob/main/ReadmePics/sections.jpeg)
 
+<img src="https://github.com/Siuumanth/Bit-n-Build-20204/blob/main/ReadmePics/sections.jpeg" alt="Alt text" width="00"/>
+
 
 
 
