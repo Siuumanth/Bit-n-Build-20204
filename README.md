@@ -1,16 +1,27 @@
-# style_sorter
+# style_sorter / Styleable
 
-An aoo to organise your wardrobe
+An app to organise your wardrobe
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+About the App:
 
-A few resources to get you started if this is your first Flutter project:
+We have developed an innovative wardrobe management app that allows users to efficiently track and organize their clothing. The app provides a clear overview of the clothes in their wardrobe, ensuring users don’t make redundant purchases by buying items they already own.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Key Features:
+- Strong SQL database for storing the users item details
+- 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Organized Sections:
+- Wardrobe can have as many sections , cloth types and items
+
+Clothes are categorized into sections like Formal, Casual, Party Wear, and user can add more types.
+Each section can have subsections for specific clothing types, including Shorts, Pants, T-Shirts, Shirts, and Accessories.
+Customizable Categories:
+
+
+Photo Integration:
+- uses can choose whatever picture
+Users can take photos of their clothes and upload them to the appropriate sections, enabling a visual catalog of their wardrobe for easier organization.
+
+
