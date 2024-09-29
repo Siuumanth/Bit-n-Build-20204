@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:style_sorter/screens/ItemDetails.dart';
+
 import 'dart:io';
 import '../model/model.dart';
+import '../model/database.dart';
 
-class ItemCard extends StatelessWidget {
+class ItemCard extends StatefulWidget {
   final Item item;
-
+  final VoidCallback onDelete;
   final bool imageornot;
 
   const ItemCard({
     required this.item,
     required this.imageornot,
+    required this.onDelete,
     super.key,
   });
 
+  @override
+  State<ItemCard> createState() => _ItemCardState();
+}
+
+class _ItemCardState extends State<ItemCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -24,7 +32,7 @@ class ItemCard extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => ItemDetailScreen(
-                item: item,
+                item: widget.item,
               ),
             ),
           );
@@ -37,9 +45,9 @@ class ItemCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 image: DecorationImage(
-                  image: imageornot == true
-                      ? FileImage(File(item.photoPath!))
-                      : AssetImage(item.photoPath!) as ImageProvider,
+                  image: widget.imageornot == true
+                      ? FileImage(File(widget.item.photoPath!))
+                      : AssetImage(widget.item.photoPath!) as ImageProvider,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -62,7 +70,7 @@ class ItemCard extends StatelessWidget {
                   if (value == 'edit') {
                     // edit logic
                   } else if (value == 'delete') {
-                    // delete logic
+                    DatabaseHelper().deleteItem(widget.item.id);
                   }
                 },
                 itemBuilder: (context) => [
@@ -85,7 +93,7 @@ class ItemCard extends StatelessWidget {
               left: 8,
               right: 8,
               child: Text(
-                item.title!,
+                widget.item.title!,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,

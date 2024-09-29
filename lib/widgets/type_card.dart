@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+import 'package:style_sorter/model/database.dart';
+
 class TypeCard extends StatelessWidget {
   final String type_name;
   final String type_image_path;
   final bool imageornot;
+  final VoidCallback ondeletetype;
+  final String id;
 
   const TypeCard({
     required this.type_name,
     required this.type_image_path,
     required this.imageornot,
+    required this.id,
+    required this.ondeletetype,
     super.key,
   });
 
@@ -53,7 +59,8 @@ class TypeCard extends StatelessWidget {
               if (value == 'edit') {
                 // edit logic
               } else if (value == 'delete') {
-                // delete logic
+                DatabaseHelper().deleteType(id);
+                ondeletetype();
               }
             },
             itemBuilder: (context) => [

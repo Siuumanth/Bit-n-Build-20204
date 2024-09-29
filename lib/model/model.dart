@@ -37,6 +37,13 @@ class Item {
           desc: '',
           sectionName: 'Office',
           typeName: 'Shirts'),
+      Item(
+          id: '4',
+          title: 'Green Formal',
+          photoPath: 'assets/images/light_g_shirt.png',
+          desc: '',
+          sectionName: 'Office',
+          typeName: 'Shirts'),
     ];
   }
 }
@@ -89,9 +96,9 @@ class Type {
           section_name: 'Office'),
       Type(
           id: '3',
-          type_name: 'Pants',
-          type_image_path: 'assetsimagescasual_pants.png',
-          section_name: 'Casual'),
+          type_name: 'Shoes',
+          type_image_path: 'assets/images/office_shoes.png',
+          section_name: 'Office'),
     ];
   }
 }

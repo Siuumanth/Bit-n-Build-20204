@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/section.dart';
 import '../model/model.dart';
-import 'dart:io';
-import './home.dart';
+
 import '../constants/colors.dart';
 import '../widgets/type_card.dart';
-import '../model/model.dart';
 
 import '../model/database.dart';
 import '../widgets/typedialog.dart';
@@ -82,11 +79,14 @@ class _TypeSectionState extends State<TypeSection> {
                                     type_name: typesList[firstIndex].type_name,
                                     type_image_path:
                                         typesList[firstIndex].type_image_path,
-                                    imageornot:
-                                        (typesList[firstIndex].id == '1' ||
-                                                typesList[firstIndex].id == '2')
-                                            ? false
-                                            : true,
+                                    imageornot: (typesList[firstIndex].id ==
+                                                '1' ||
+                                            typesList[firstIndex].id == '2' ||
+                                            typesList[firstIndex].id == '3')
+                                        ? false
+                                        : true,
+                                    ondeletetype: loadTypesFromDatabase,
+                                    id: typesList[firstIndex].id,
                                   ),
                                 ),
                               ),
@@ -117,9 +117,13 @@ class _TypeSectionState extends State<TypeSection> {
                                           .type_image_path,
                                       imageornot: (typesList[secondIndex].id ==
                                                   '1' ||
-                                              typesList[secondIndex].id == '2')
+                                              typesList[secondIndex].id ==
+                                                  '2' ||
+                                              typesList[secondIndex].id == '3')
                                           ? false
                                           : true,
+                                      ondeletetype: loadTypesFromDatabase,
+                                      id: typesList[secondIndex].id,
                                     ),
                                   ),
                                 ),
@@ -128,7 +132,6 @@ class _TypeSectionState extends State<TypeSection> {
                               const Spacer(), // Fills empty space if there's no second card
                           ],
                         );
-                        ;
                       },
                     ),
                   )
@@ -187,6 +190,7 @@ class _TypeSectionState extends State<TypeSection> {
     return AppBar(
       title: Row(
         children: [
+          Text(widget.sectionName),
           const Spacer(),
           Container(
             height: 40,

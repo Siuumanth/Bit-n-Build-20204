@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:style_sorter/model/database.dart';
 import '../model/model.dart';
 import 'dart:io';
 
@@ -61,7 +62,8 @@ class _SectionitemState extends State<Sectionitem> {
                   if (result == 'Edit') {
                     widget.on_section_edited(widget.section);
                   } else if (result == 'Delete') {
-                    widget.on_section_deleted(widget.section);
+                    DatabaseHelper().deleteSection(widget.section.id);
+                    widget.on_section_deleted();
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[

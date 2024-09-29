@@ -1,19 +1,10 @@
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import '../widgets/itemcard.dart';
-
-import 'package:flutter/material.dart';
-
-import '../widgets/section.dart';
 import '../model/model.dart';
-import 'dart:io';
-
 import '../constants/colors.dart';
 import 'addItems.dart';
 
 import '../model/database.dart';
-import '../widgets/typedialog.dart';
-import '../widgets/itemcard.dart';
 
 class ItemSection extends StatefulWidget {
   final String sectionName;
@@ -67,22 +58,24 @@ class _ItemSectionState extends State<ItemSection> {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // First card in the row
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ItemCard(
-                                  item: ItemList[
-                                      firstIndex], // Pass the entire Item object
-                                  imageornot: (ItemList[firstIndex].id == '1' ||
-                                          ItemList[firstIndex].id == '2' ||
-                                          ItemList[firstIndex].id == '3')
-                                      ? false
-                                      : true,
-                                ),
+                                    item: ItemList[firstIndex],
+                                    imageornot: (ItemList[firstIndex].id ==
+                                                '1' ||
+                                            ItemList[firstIndex].id == '2' ||
+                                            ItemList[firstIndex].id == '3' ||
+                                            ItemList[firstIndex].id == '4')
+                                        ? false
+                                        : true,
+                                    onDelete: () {
+                                      loadItemsFromDatabase();
+                                    }),
                               ),
                             ),
-                            // Conditionally show second card if it exists
+
                             if (secondIndex < ItemList.length)
                               Expanded(
                                 child: Padding(
@@ -92,14 +85,18 @@ class _ItemSectionState extends State<ItemSection> {
                                     imageornot: (ItemList[secondIndex].id ==
                                                 '1' ||
                                             ItemList[secondIndex].id == '2' ||
-                                            ItemList[secondIndex].id == '3')
+                                            ItemList[secondIndex].id == '3' ||
+                                            ItemList[secondIndex].id == '4')
                                         ? false
                                         : true,
+                                    onDelete: () {
+                                      loadItemsFromDatabase();
+                                    },
                                   ),
                                 ),
                               ),
                             if (secondIndex >= ItemList.length)
-                              const Spacer(), // Fills empty space if there's no second card
+                              const Spacer(), // Fills empty space
                           ],
                         );
                       },
@@ -114,12 +111,16 @@ class _ItemSectionState extends State<ItemSection> {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddingItem(
-                              sectionName: widget.sectionName,
-                              typeName: widget.typeName)));
-                  loadItemsFromDatabase();
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddingItem(
+                        sectionName: widget.sectionName,
+                        typeName: widget.typeName,
+                      ),
+                    ),
+                  ).then((_) {
+                    loadItemsFromDatabase();
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: tdyellow,
@@ -143,6 +144,7 @@ class _ItemSectionState extends State<ItemSection> {
     return AppBar(
       title: Row(
         children: [
+          Text(widget.typeName),
           const Spacer(),
           Container(
             height: 40,
@@ -178,6 +180,10 @@ class _ItemSectionState extends State<ItemSection> {
               hintText: 'Search ${widget.typeName}',
               hintStyle: TextStyle(color: tdblack))),
     );
+  }
+
+  void setthestate() {
+    setState(() {});
   }
 
   Widget dividierline() {

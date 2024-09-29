@@ -4,7 +4,8 @@ import '../model/database.dart';
 import '../constants/colors.dart';
 import '../model/model.dart';
 import '../widgets/sec_dialog.dart';
-import '../model/dbmethods.dart';
+import './Calendar.dart';
+
 import 'types_page.dart';
 
 class Home extends StatefulWidget {
@@ -37,7 +38,7 @@ class _HomeState extends State<Home> {
   Future<void> loadSectionsFromDatabase() async {
     final sections = await DatabaseHelper().getSections();
     setState(() {
-      sectionList = sections; // Assigning sections from the database
+      sectionList = sections;
     });
   }
 
@@ -54,6 +55,10 @@ class _HomeState extends State<Home> {
     return AppBar(
       title: Row(
         children: [
+          const Text(
+            ' My Wardrobe',
+            style: TextStyle(fontSize: 20),
+          ),
           const Spacer(),
           Container(
             height: 40,
@@ -77,12 +82,11 @@ class _HomeState extends State<Home> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const DrawerHeader(
+          DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: tdyellow,
             ),
-            child: Text('Menu',
-                style: TextStyle(fontSize: 24, color: Colors.white)),
+            child: Text('Menu', style: TextStyle(fontSize: 24, color: tdblack)),
           ),
           ListTile(
             leading: const Icon(Icons.person),
@@ -206,7 +210,9 @@ class _HomeState extends State<Home> {
   }
 
   void change_section() {}
-  void delete_section() {}
+  void delete_section() {
+    loadSectionsFromDatabase();
+  }
 
   void _showSecDialog(BuildContext context) {
     showDialog(
@@ -228,12 +234,6 @@ class _HomeState extends State<Home> {
         print('Image Path: $imagePath');
       }
     });
-  }
-
-  Widget CalendarSection() {
-    return const Center(
-      child: Text('Welcome to the Calendar Section'),
-    );
   }
 
   // Settings section widget

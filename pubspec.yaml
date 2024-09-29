@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
   sqflite: ^2.3.3+2
   image_picker: ^1.1.2
+  table_calendar: ^3.1.2
   
    
 
@@ -73,7 +74,10 @@ flutter:
     - assets/images/casual_pants.png
     - assets/images/blue_formal_shirt.png
     - assets/images/black_formal_pant.png
+    - assets/images/red_formal_shirt.png
     - assets/images/party_wear.png
+    - assets/images/light_g_shirt.png
+    - assets/images/office_shoes.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

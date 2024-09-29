@@ -1,14 +1,10 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
-import '../widgets/itemcard.dart';
-import '../widgets/section.dart';
-import '../model/model.dart';
+
 import 'dart:io';
 import '../constants/colors.dart';
-import '../widgets/type_card.dart';
+
 import '../model/database.dart';
-import '../widgets/typedialog.dart';
-import '../widgets/PickerDialog.dart';
 
 class AddingItem extends StatefulWidget {
   final String sectionName;
@@ -103,14 +99,13 @@ class _AddItemState extends State<AddingItem> {
               child: ElevatedButton(
                 onPressed: () {
                   if (nameController.text.isEmpty) {
-                    // Show Snackbar if item name is empty
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Please enter item name.'),
                       ),
                     );
                   } else {
-                    // Close the window and go back
+                    addItemsto_db();
                     Navigator.pop(context);
                   }
                 },
@@ -148,7 +143,6 @@ class _AddItemState extends State<AddingItem> {
   void addItemsto_db() {
     DatabaseHelper().insertItem(widget.typeName, widget.sectionName,
         nameController.text, descController.text, image_path!);
-    Navigator.pop(context);
   }
 
   Future<String?> getImageGallery() async {

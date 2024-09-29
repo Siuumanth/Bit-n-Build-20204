@@ -108,7 +108,7 @@ class DatabaseHelper {
     await db.insert(
       'items',
       {
-        'type': type,
+        'type_name': type,
         'section_name': sectionName,
         'title': title,
         'desc': desc,
@@ -117,8 +117,8 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> deleteItem(int id) async {
-    final db = await database; // Access the database
+  Future<void> deleteItem(String id) async {
+    final db = await database;
     await db.delete(
       'items',
       where: 'id = ?',
@@ -146,6 +146,15 @@ class DatabaseHelper {
 //
 //
 //
+
+  Future<void> deleteSection(String id) async {
+    final db = await DatabaseHelper().database;
+    await db.delete(
+      'clothSection',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 
   Future<void> _insertDefaultSections(Database db) async {
     final List<Section> defaultSections = Section.sectionlist();
@@ -181,14 +190,6 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> deleteSection(int id) async {
-    final db = await database; // Access the database
-    await db.delete(
-      'clothSection',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-  }
   //
   //
   //
@@ -234,8 +235,8 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> deleteType(int id) async {
-    final db = await database; // Access the database
+  Future<void> deleteType(String id) async {
+    final db = await database;
     await db.delete(
       'clothType',
       where: 'id = ?',
