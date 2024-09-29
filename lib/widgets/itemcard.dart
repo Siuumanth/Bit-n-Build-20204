@@ -71,6 +71,7 @@ class _ItemCardState extends State<ItemCard> {
                     // edit logic
                   } else if (value == 'delete') {
                     DatabaseHelper().deleteItem(widget.item.id);
+                   widget.onDelete();
                   }
                 },
                 itemBuilder: (context) => [
