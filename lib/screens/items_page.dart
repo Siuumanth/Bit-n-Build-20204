@@ -1,40 +1,46 @@
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/material.dart';
+import '../widgets/itemcard.dart';
+
 import 'package:flutter/material.dart';
 
 import '../widgets/section.dart';
 import '../model/model.dart';
 import 'dart:io';
-import './home.dart';
+
 import '../constants/colors.dart';
-import '../widgets/type_card.dart';
-import '../model/model.dart';
+import 'addItems.dart';
 
 import '../model/database.dart';
 import '../widgets/typedialog.dart';
-import '../screens/items_page.dart';
+import '../widgets/itemcard.dart';
 
-class TypeSection extends StatefulWidget {
+class ItemSection extends StatefulWidget {
   final String sectionName;
-  const TypeSection({required this.sectionName, super.key});
+  final String typeName;
+  const ItemSection(
+      {required this.sectionName, required this.typeName, super.key});
 
   @override
-  State<TypeSection> createState() => _TypeSectionState();
+  State<ItemSection> createState() => _ItemSectionState();
 }
 
-class _TypeSectionState extends State<TypeSection> {
-  List<Type> typesList = [];
+class _ItemSectionState extends State<ItemSection> {
+  List<Item> ItemList = [];
   late TextEditingController typecontroller;
 
   @override
   void initState() {
     super.initState();
-    loadTypesFromDatabase().then((_) {});
+    loadItemsFromDatabase().then((_) {});
     typecontroller = TextEditingController();
   }
 
-  Future<void> loadTypesFromDatabase() async {
-    final allTypes = await DatabaseHelper().getTypes(widget.sectionName);
+  Future<void> loadItemsFromDatabase() async {
+    final allItems =
+        await DatabaseHelper().getItems(widget.typeName, widget.sectionName);
     setState(() {
-      typesList = allTypes; // Assigning sections from the database
+      ItemList = allItems;
     });
   }
 
@@ -52,8 +58,7 @@ class _TypeSectionState extends State<TypeSection> {
                   const SizedBox(height: 15),
                   Expanded(
                     child: ListView.builder(
-                      itemCount:
-                          (typesList.length / 2).ceil(), // Number of rows
+                      itemCount: (ItemList.length / 2).ceil(), // Number of rows
                       itemBuilder: (context, index) {
                         // Calculate first and second item in the row
                         int firstIndex = index * 2;
@@ -62,73 +67,41 @@ class _TypeSectionState extends State<TypeSection> {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            // First card in the row
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ItemSection(
-                                          sectionName: widget.sectionName,
-                                          typeName: typesList[firstIndex]
-                                              .type_name, // Pass the type name here
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: TypeCard(
-                                    type_name: typesList[firstIndex].type_name,
-                                    type_image_path:
-                                        typesList[firstIndex].type_image_path,
-                                    imageornot:
-                                        (typesList[firstIndex].id == '1' ||
-                                                typesList[firstIndex].id == '2')
-                                            ? false
-                                            : true,
-                                  ),
+                                child: ItemCard(
+                                  item: ItemList[
+                                      firstIndex], // Pass the entire Item object
+                                  imageornot: (ItemList[firstIndex].id == '1' ||
+                                          ItemList[firstIndex].id == '2' ||
+                                          ItemList[firstIndex].id == '3')
+                                      ? false
+                                      : true,
                                 ),
                               ),
                             ),
-
-                            if (secondIndex < typesList.length)
+                            // Conditionally show second card if it exists
+                            if (secondIndex < ItemList.length)
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      // Navigate to ItemSection with the type name for the second card
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ItemSection(
-                                            sectionName: widget.sectionName,
-                                            typeName: typesList[secondIndex]
-                                                .type_name,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: TypeCard(
-                                      type_name:
-                                          typesList[secondIndex].type_name,
-                                      type_image_path: typesList[secondIndex]
-                                          .type_image_path,
-                                      imageornot: (typesList[secondIndex].id ==
-                                                  '1' ||
-                                              typesList[secondIndex].id == '2')
-                                          ? false
-                                          : true,
-                                    ),
+                                  child: ItemCard(
+                                    item: ItemList[secondIndex],
+                                    imageornot: (ItemList[secondIndex].id ==
+                                                '1' ||
+                                            ItemList[secondIndex].id == '2' ||
+                                            ItemList[secondIndex].id == '3')
+                                        ? false
+                                        : true,
                                   ),
                                 ),
                               ),
-                            if (secondIndex >= typesList.length)
+                            if (secondIndex >= ItemList.length)
                               const Spacer(), // Fills empty space if there's no second card
                           ],
                         );
-                        ;
                       },
                     ),
                   )
@@ -140,7 +113,13 @@ class _TypeSectionState extends State<TypeSection> {
               margin: const EdgeInsets.only(bottom: 20, right: 20),
               child: ElevatedButton(
                 onPressed: () {
-                  _showtypeDialog(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddingItem(
+                              sectionName: widget.sectionName,
+                              typeName: widget.typeName)));
+                  loadItemsFromDatabase();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: tdyellow,
@@ -158,29 +137,6 @@ class _TypeSectionState extends State<TypeSection> {
             ),
           )
         ]));
-  }
-
-  void _showtypeDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return TypeDialog();
-      },
-    ).then((result) {
-      //the 'result' contains the returned values
-      if (result != null) {
-        String name = result['name'];
-        String imagePath = result['imagePath'];
-        String section_name = widget.sectionName;
-        setState(() async {
-          DatabaseHelper().insertype(name, section_name, imagePath);
-          await loadTypesFromDatabase();
-        });
-
-        print('Name: $name');
-        print('Image Path: $imagePath');
-      }
-    });
   }
 
   AppBar buildAppBar() {
@@ -219,7 +175,7 @@ class _TypeSectionState extends State<TypeSection> {
               border: InputBorder.none,
               prefixIconConstraints:
                   const BoxConstraints(minWidth: 25, maxHeight: 20),
-              hintText: 'Search ${widget.sectionName}',
+              hintText: 'Search ${widget.typeName}',
               hintStyle: TextStyle(color: tdblack))),
     );
   }

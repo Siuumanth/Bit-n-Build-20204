@@ -71,6 +71,9 @@ flutter:
     - assets/images/pant_type.png
     - assets/images/shirt2_type.png
     - assets/images/casual_pants.png
+    - assets/images/blue_formal_shirt.png
+    - assets/images/black_formal_pant.png
+    - assets/images/party_wear.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

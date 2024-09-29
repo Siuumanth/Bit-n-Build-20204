@@ -1,22 +1,44 @@
 class Item {
   final String id;
-  String? type;
-
+  String? typeName;
+  String? sectionName;
   String? title;
   String? desc;
-  String? photoPath; // File path as String
+  String? photoPath;
 
-  Item({
-    required this.id,
-    required this.type,
-    required this.title,
-    required this.desc,
-    required this.photoPath,
-  });
+  Item(
+      {required this.id,
+      required this.typeName,
+      required this.title,
+      required this.desc,
+      required this.photoPath,
+      required this.sectionName});
 
-  //static List<Item> todolist() {
-  //   return [];
-  // }
+  static List<Item> Itemlist() {
+    return [
+      Item(
+          id: '1',
+          title: 'Blue Formal Shirt',
+          photoPath: 'assets/images/blue_formal_shirt.png',
+          desc: '',
+          sectionName: 'Office',
+          typeName: 'Shirts'),
+      Item(
+          id: '2',
+          title: 'Black Formal Pant',
+          photoPath: 'assets/images/black_formal_pant.png',
+          desc: '',
+          sectionName: 'Office',
+          typeName: 'Pants'),
+      Item(
+          id: '3',
+          title: 'Red Formal Shirt',
+          photoPath: 'assets/images/red_formal_shirt.png',
+          desc: '',
+          sectionName: 'Office',
+          typeName: 'Shirts'),
+    ];
+  }
 }
 
 class Section {
@@ -36,6 +58,7 @@ class Section {
           id: '1', name: 'Office', photo: 'assets/images/office_section.jpeg'),
       Section(
           id: '2', name: 'Casual', photo: 'assets/images/casual_section.jpeg'),
+      Section(id: '3', name: 'Party', photo: 'assets/images/party_wear.png')
     ];
   }
 }

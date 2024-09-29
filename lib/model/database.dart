@@ -43,24 +43,109 @@ class DatabaseHelper {
     )
   ''');
 
-    // Create Items table
     await db.execute('''
-    CREATE TABLE items (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      type_id INTEGER,
-      section_id INTEGER,
-      wardrobe_id INTEGER,
-      title TEXT NOT NULL,
-      photo TEXT,
-      FOREIGN KEY (type_id) REFERENCES clothType (id),
-      FOREIGN KEY (section_id) REFERENCES clothSection (id),
-      FOREIGN KEY (wardrobe_id) REFERENCES wardrobe (id)
-    )
-  ''');
+  CREATE TABLE items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type_name TEXT NOT NULL,
+    section_name TEXT NOT NULL,
+    title TEXT NOT NULL,
+    desc TEXT,
+    photo TEXT,
+    FOREIGN KEY (type_name) REFERENCES clothType (type_name),
+    FOREIGN KEY (section_name) REFERENCES clothSection (section_name)
+  )
+''');
 
     await _insertDefaultSections(db);
     await _insertDefaultTypes(db);
+    await _insertDefaultItems(db);
   }
+
+  //
+  //
+  //
+  //
+  //
+
+  Future<List<Item>> getItems(String typeName, String sectionName) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'items',
+      where: 'type_name = ? AND section_name = ?',
+      whereArgs: [typeName, sectionName],
+    );
+
+    return List.generate(maps.length, (i) {
+      return Item(
+        id: maps[i]['id'].toString(),
+        typeName: maps[i]['type'],
+        title: maps[i]['title'],
+        desc: maps[i]['desc'],
+        photoPath: maps[i]['photo'],
+        sectionName: maps[i]['section_name'],
+      );
+    });
+  }
+
+  Future<void> _insertDefaultItems(Database db) async {
+    final List<Item> defaultItems = Item.Itemlist();
+
+    for (var item in defaultItems) {
+      await db.insert('items', {
+        'type_name': item.typeName,
+        'section_name': item.sectionName,
+        'title': item.title,
+        'desc': item.desc,
+        'photo': item.photoPath,
+      });
+      print('Item inserted');
+    }
+  }
+
+  Future<void> insertItem(String type, String sectionName, String title,
+      String desc, String photoPath) async {
+    final db = await DatabaseHelper().database;
+    await db.insert(
+      'items',
+      {
+        'type': type,
+        'section_name': sectionName,
+        'title': title,
+        'desc': desc,
+        'photo': photoPath,
+      },
+    );
+  }
+
+  Future<void> deleteItem(int id) async {
+    final db = await database; // Access the database
+    await db.delete(
+      'items',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<int> updateItem(Item item) async {
+    final db = await database;
+
+    return await db.update(
+      'items',
+      {
+        'title': item.title,
+        'desc': item.desc,
+        'photoPath': item.photoPath,
+      },
+      where: 'id = ?',
+      whereArgs: [item.id],
+    );
+  }
+
+//
+//
+//
+//
+//
 
   Future<void> _insertDefaultSections(Database db) async {
     final List<Section> defaultSections = Section.sectionlist();
@@ -96,6 +181,14 @@ class DatabaseHelper {
     );
   }
 
+  Future<void> deleteSection(int id) async {
+    final db = await database; // Access the database
+    await db.delete(
+      'clothSection',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
   //
   //
   //
@@ -140,5 +233,13 @@ class DatabaseHelper {
       },
     );
   }
-  //
+
+  Future<void> deleteType(int id) async {
+    final db = await database; // Access the database
+    await db.delete(
+      'clothType',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }

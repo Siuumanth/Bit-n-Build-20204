@@ -148,8 +148,11 @@ class _HomeState extends State<Home> {
                           section: item,
                           on_section_edited: change_section,
                           on_section_deleted: delete_section,
-                          imageornot:
-                              (item.id == '1' || item.id == '2') ? false : true,
+                          imageornot: (item.id == '1' ||
+                                  item.id == '2' ||
+                                  item.id == '3')
+                              ? false
+                              : true,
                         ),
                       ),
                     dividierline(),
