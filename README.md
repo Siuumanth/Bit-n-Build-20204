@@ -28,6 +28,8 @@ Key Features:
 - Strong Object Oriented Structure and SQL database for easy create , read and delete functionality.
 - User friendly interface and experience.
 
+- Planned to include calendar for tracking cloth usage, but it is incomplete
+  
 Organized Sections:
 - Wardrobe can have as many sections , cloth types and items as the user wants.
 
